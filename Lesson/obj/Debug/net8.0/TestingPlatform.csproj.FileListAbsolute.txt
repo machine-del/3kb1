@@ -1,0 +1,8 @@
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.csproj.AssemblyReference.cache
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.AssemblyInfoInputs.cache
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.AssemblyInfo.cs
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.csproj.CoreCompileInputs.cache
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Machine\source\repos\Lesson\Lesson\obj\Debug\net8.0\TestingPlatform.MvcApplicationPartsAssemblyInfo.cache

@@ -1,0 +1,17 @@
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.AssemblyInfo.cs
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Infrastructure.deps.json
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Infrastructure.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Infrastructure.pdb
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Domain.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Domain.pdb
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingP.870B73F8.Up2Date
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\refint\TestingPlatform.Infrastructure.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\TestingPlatform.Infrastructure.pdb
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\obj\Debug\net8.0\ref\TestingPlatform.Infrastructure.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Application.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Infrastructure\bin\Debug\net8.0\TestingPlatform.Application.pdb

@@ -1,0 +1,15 @@
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\bin\Debug\net8.0\TestingPlatform.Application.deps.json
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\bin\Debug\net8.0\TestingPlatform.Application.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\bin\Debug\net8.0\TestingPlatform.Application.pdb
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.AssemblyInfoInputs.cache
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.AssemblyInfo.cs
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.csproj.CoreCompileInputs.cache
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\refint\TestingPlatform.Application.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.pdb
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\ref\TestingPlatform.Application.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\bin\Debug\net8.0\TestingPlatform.Domain.dll
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\bin\Debug\net8.0\TestingPlatform.Domain.pdb
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingPlatform.Application.csproj.AssemblyReference.cache
+C:\Users\Machine\source\repos\Lesson\TestingPlatform.Application\obj\Debug\net8.0\TestingP.70010D4C.Up2Date

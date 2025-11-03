@@ -8,12 +8,12 @@ using TestingPlatform.Domain.Models;
 
 namespace TestingPlatform.Application.Interfaces
 {
-    public interface IGroupRepository
+    public interface IStudentRepository
     {
-        Task<List<GroupDTO>> GetAllAsync();
-        Task<GroupDTO> GetByIdAsync(int id);
-        Task<int> CreateAsync(GroupDTO group);
-        Task UpdateAsync(GroupDTO group, int id);
+        Task<IEnumerable<StudentDTO>> GetAllAsync();
+        Task<StudentDTO> GetByIdAsync(int id);
+        Task<int> CreateAsync(StudentDTO student);
+        Task UpdateAsync(StudentDTO student, int id);
         Task DeleteAsync(int id);
     }
 }

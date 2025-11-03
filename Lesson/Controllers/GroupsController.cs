@@ -1,51 +1,55 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Lesson.Requests.Group;
+using Lesson.Responses.Group;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TestingPlatform.Infrastructure.Data;
-using TestingPlatform.Application.Interfaces;
-using TestingPlatform.Infrastructure.Repositories;
-using TestingPlatform.Domain.Models;
+using System.Text.RegularExpressions;
 using TestingPlatform.Application.DTOS;
+using TestingPlatform.Application.Interfaces;
+using TestingPlatform.Domain.Models;
+using TestingPlatform.Infrastructure.Data;
+using TestingPlatform.Infrastructure.Repositories;
 
 namespace Lesson.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupsController(IGroupRepository _repository) : ControllerBase
+    public class GroupsController(IGroupRepository _repository, IMapper mapper) : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAllGroups()
+        public async Task<IActionResult> GetAllGroups()
         {
-            var groups = _repository.GetAll();
-            return Ok(groups);
+            var groups =  await _repository.GetAllAsync();
+            return Ok(mapper.Map<IEnumerable<GroupResponse>>(groups));
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetGroupById([FromRoute] int id)
+        public async Task<IActionResult> GetGroupById([FromRoute] int id)
         {
-            var group = _repository.GetById(id);
+            var group = await _repository.GetByIdAsync(id);
 
-            return Ok(group);
+            return Ok(mapper.Map<GroupResponse>(group));
         }
 
         [HttpPost]
-        public IActionResult CreateGroup([FromBody] GroupDTO group)
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroupRequest group)
         {
-            var id = _repository.Create(group);
+            var id = await _repository.CreateAsync(mapper.Map<GroupDTO>(group));
             return StatusCode(StatusCodes.Status201Created, new {Id = id});
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UpdateGroup([FromBody] GroupDTO group, [FromRoute] int id)
+        public async Task<IActionResult> UpdateGroup([FromBody] UpdateGroupRequest group, [FromRoute] int id)
         {
-            _repository.Update(group);
+            await _repository.UpdateAsync(mapper.Map<GroupDTO>(group), id);
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteGroup([FromRoute] int id)
+        public async Task<IActionResult> DeleteGroup([FromRoute] int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
             return NoContent();
         }
     }

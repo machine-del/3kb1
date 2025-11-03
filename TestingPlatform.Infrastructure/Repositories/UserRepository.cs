@@ -1,58 +1,71 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestingPlatform.Application.DTOS;
 using TestingPlatform.Application.Interfaces;
 using TestingPlatform.Domain.Models;
 using TestingPlatform.Infrastructure.Data;
 
 namespace TestingPlatform.Infrastructure.Repositories
 {
-    public class UserRepository(AppDbContext appDbContext) : IUserRepository
+    public class UserRepository(AppDbContext appDbContext, IMapper mapper) : IUserRepository
     {
-        public List<User> GetAll()
+        public async Task<IEnumerable<UserDTO>> GetAllAsync()
         {
-            var users = appDbContext.Users.AsNoTracking().ToList();
-            return users;
+            var users = await appDbContext.Users.AsNoTracking().ToListAsync();
+            return mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        public User GetById(int id)
+        public async Task<UserDTO> GetByIdAsync(int id)
         {
-            var user = appDbContext.Users.AsNoTracking().FirstOrDefault(u => u.Id == id);
+            var user = await appDbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
             if (user is null) throw new Exception("Пользователь не найден");
             
-            return user;
+            return mapper.Map<UserDTO>(user);
         }
 
-        public int Create(User user)
+        public async Task<int> CreateAsync(UserDTO userDTO)
         {
-            appDbContext.Users.Add(user);
-            appDbContext.SaveChanges();
+            var user = mapper.Map<User>(userDTO);
+
+            await appDbContext.Users.AddAsync(user);
+            await appDbContext.SaveChangesAsync();
 
             return user.Id;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var exists = appDbContext.Users.FirstOrDefault(x => x.Id == id);
+            var user = await appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (exists is null) throw new Exception("Пользователь не найден");
+            if (user is null) throw new Exception("Пользователь не найден");
 
-            appDbContext.Users.Remove(exists);
-            appDbContext.SaveChanges();
+            appDbContext.Users.Remove(user);
+            await appDbContext.SaveChangesAsync();
 
         }
 
-        public void Update(User user)
+        public async Task UpdateAsync(UserDTO userDTO, int id)
         {
-            var exists = appDbContext.Users.FirstOrDefault(x => x.Id == user.Id);
+            var exists = await appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
             
             if (exists is null) throw new Exception("Пользователь не найден");
 
-            appDbContext.SaveChanges();
+            if (await appDbContext.Users.AnyAsync(x => x.Login == userDTO.Login)) throw new Exception("Пользователь с таким логином существует");
+
+            exists.Login = userDTO.Login;
+            exists.Email = userDTO.Email;
+            exists.Role = userDTO.Role;
+            exists.FirtsName = userDTO.FirstName;
+            exists.LastName = userDTO.LastName;
+            exists.MiddleName = userDTO.MiddleName;
+
+            await appDbContext.SaveChangesAsync();
         }
     }
 }

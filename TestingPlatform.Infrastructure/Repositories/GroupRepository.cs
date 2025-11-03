@@ -9,41 +9,41 @@ namespace TestingPlatform.Infrastructure.Repositories
 {
     public class GroupRepository(AppDbContext appDbContext, IMapper mapper) : IGroupRepository
     {
-        public List<GroupDTO> GetAll()
+        public async Task<List<GroupDTO>> GetAllAsync()
         {
-            var groups = appDbContext.Groups
+            var groups =  await appDbContext.Groups
                 .Include(x => x.Project)
                 .Include(x => x.Direction)
                 .Include(x => x.Course)
                 .Include(x => x.Students)
                 .AsNoTracking()
-                .ToList();
+                .ToListAsync();
 
             return mapper.Map<List<GroupDTO>>(groups);
         }
 
-        public GroupDTO GetById(int id)
+        public async Task<GroupDTO> GetByIdAsync(int id)
         {
-            var group = appDbContext.Groups           
+            var group = await appDbContext.Groups           
                 .Include(x => x.Project)
                 .Include(x => x.Direction)
                 .Include(x => x.Course)
                 .Include(x => x.Students)
                 .AsNoTracking()
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (group is null) throw new Exception("Группа не найдена");
 
             return mapper.Map<GroupDTO>(group);
         }
 
-        public int Create(GroupDTO groupDto)
+        public async Task<int> CreateAsync(GroupDTO groupDto)
         {
             var group = mapper.Map<Group>(groupDto);
 
-            var direction = appDbContext.Directions.FirstOrDefault(d => d.Id == group.DirectionId);
-            var course = appDbContext.Courses.FirstOrDefault(c => c.Id == group.CourseId);
-            var project = appDbContext.Projects.FirstOrDefault(p => p.Id == group.ProjectId);
+            var direction = await appDbContext.Directions.FirstOrDefaultAsync(d => d.Id == group.DirectionId);
+            var course = await appDbContext.Courses.FirstOrDefaultAsync(c => c.Id == group.CourseId);
+            var project = await appDbContext.Projects.FirstOrDefaultAsync(p => p.Id == group.ProjectId);
 
             if (direction is null) throw new Exception("Убедитесь что направление существует");
             group.Direction = direction;
@@ -63,15 +63,15 @@ namespace TestingPlatform.Infrastructure.Repositories
                 group.Students = students;
             }
 
-            var groupId = appDbContext.Add(group);
-            appDbContext.SaveChanges();
+            var groupId = await appDbContext.AddAsync(group);
+            await appDbContext.SaveChangesAsync();
 
             return groupId.Entity.Id;
         }
 
-        public void Update(GroupDTO groupDto)
+        public async Task UpdateAsync(GroupDTO groupDto, int id)
         {
-            var group = appDbContext.Groups.FirstOrDefault(x => x.Id == groupDto.Id);
+            var group = await appDbContext.Groups.FirstOrDefaultAsync(x => x.Id == id);
             if (group is null) throw new Exception("Группа не найдена");
 
 
@@ -80,17 +80,17 @@ namespace TestingPlatform.Infrastructure.Repositories
             group.CourseId = groupDto.Course.Id;
             group.ProjectId = groupDto.Project.Id;
 
-            appDbContext.SaveChanges();
+            await appDbContext.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var group = appDbContext.Groups.FirstOrDefault(g => g.Id == id);
+            var group = await appDbContext.Groups.FirstOrDefaultAsync(g => g.Id == id);
 
             if (group is null) throw new Exception("Группа не найдена");
 
             appDbContext.Groups.Remove(group);
-            appDbContext.SaveChangesAsync();
+            await appDbContext.SaveChangesAsync();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace TestingPlatform.Domain.Models
 
         public UserRole Role {  get; set; }
 
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [JsonIgnore]
         [Required]

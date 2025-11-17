@@ -9,9 +9,9 @@ namespace TestingPlatform.Domain.Models
         public int Id {  get; set; }
 
         [DefaultValue("CURRENT_TIMESTAMP")]
-        public DateTimeOffset? StartedAt { get; set; }
+        public DateTime? StartedAt { get; set; }
 
-        public DateTimeOffset SubmittedAt { get; set; }
+        public DateTime SubmittedAt { get; set; }
 
         public int? Score { get; set; }
 

@@ -20,13 +20,13 @@ namespace TestingPlatform.Domain.Models
         public TestType Type { get; set; }
 
         [DefaultValue("CURRENT_TIMESTAMP")]
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [Required]
-        public DateTimeOffset PublishedAt { get; set; }
+        public DateTime PublishedAt { get; set; }
 
         [Required]
-        public DateTimeOffset Deadline { get; set; }
+        public DateTime Deadline { get; set; }
         
         public int? DurationMinutes { get; set; }
 

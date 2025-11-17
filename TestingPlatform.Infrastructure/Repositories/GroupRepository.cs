@@ -1,9 +1,10 @@
-﻿using TestingPlatform.Infrastructure.Data;
-using TestingPlatform.Application.Interfaces;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using TestingPlatform.Domain.Models;
 using TestingPlatform.Application.DTOS;
+using TestingPlatform.Application.Interfaces;
+using TestingPlatform.Domain.Models;
+using TestingPlatform.Infrastructure.Data;
+using TestingPlatform.Infrastructure.Exceptions;
 
 namespace TestingPlatform.Infrastructure.Repositories
 {
@@ -32,7 +33,7 @@ namespace TestingPlatform.Infrastructure.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (group is null) throw new Exception("Группа не найдена");
+            if (group is null) throw new EntityNotFoundException("Группа не найдена");
 
             return mapper.Map<GroupDTO>(group);
         }
@@ -45,11 +46,11 @@ namespace TestingPlatform.Infrastructure.Repositories
             var course = await appDbContext.Courses.FirstOrDefaultAsync(c => c.Id == group.CourseId);
             var project = await appDbContext.Projects.FirstOrDefaultAsync(p => p.Id == group.ProjectId);
 
-            if (direction is null) throw new Exception("Убедитесь что направление существует");
+            if (direction is null) throw new EntityNotFoundException("Убедитесь что направление существует");
             group.Direction = direction;
-            if (course is null) throw new Exception("Убедитесь что курс существует");
+            if (course is null) throw new EntityNotFoundException("Убедитесь что курс существует");
             group.Course = course;
-            if (project is null) throw new Exception("Убедитесь что проект существует");
+            if (project is null) throw new EntityNotFoundException("Убедитесь что проект существует");
             group.Project = project;
             
             if (group.Students.Any())
@@ -72,7 +73,7 @@ namespace TestingPlatform.Infrastructure.Repositories
         public async Task UpdateAsync(GroupDTO groupDto, int id)
         {
             var group = await appDbContext.Groups.FirstOrDefaultAsync(x => x.Id == id);
-            if (group is null) throw new Exception("Группа не найдена");
+            if (group is null) throw new EntityNotFoundException("Группа не найдена");
 
 
             group.Name = groupDto.Name;
@@ -87,7 +88,7 @@ namespace TestingPlatform.Infrastructure.Repositories
         {
             var group = await appDbContext.Groups.FirstOrDefaultAsync(g => g.Id == id);
 
-            if (group is null) throw new Exception("Группа не найдена");
+            if (group is null) throw new EntityNotFoundException("Группа не найдена");
 
             appDbContext.Groups.Remove(group);
             await appDbContext.SaveChangesAsync();

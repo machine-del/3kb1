@@ -9,6 +9,7 @@ using TestingPlatform.Application.DTOS;
 using TestingPlatform.Application.Interfaces;
 using TestingPlatform.Domain.Models;
 using TestingPlatform.Infrastructure.Data;
+using TestingPlatform.Infrastructure.Exceptions;
 
 namespace TestingPlatform.Infrastructure.Repositories
 {
@@ -24,7 +25,7 @@ namespace TestingPlatform.Infrastructure.Repositories
         {
             var user = await appDbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
-            if (user is null) throw new Exception("Пользователь не найден");
+            if (user is null) throw new EntityNotFoundException("Пользователь не найден");
             
             return mapper.Map<UserDTO>(user);
         }
@@ -43,7 +44,7 @@ namespace TestingPlatform.Infrastructure.Repositories
         {
             var user = await appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (user is null) throw new Exception("Пользователь не найден");
+            if (user is null) throw new EntityNotFoundException("Пользователь не найден");
 
             appDbContext.Users.Remove(user);
             await appDbContext.SaveChangesAsync();
@@ -54,9 +55,9 @@ namespace TestingPlatform.Infrastructure.Repositories
         {
             var exists = await appDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
             
-            if (exists is null) throw new Exception("Пользователь не найден");
+            if (exists is null) throw new EntityNotFoundException("Пользователь не найден");
 
-            if (await appDbContext.Users.AnyAsync(x => x.Login == userDTO.Login)) throw new Exception("Пользователь с таким логином существует");
+            if (await appDbContext.Users.AnyAsync(x => x.Login == userDTO.Login)) throw new EntityNotFoundException("Пользователь с таким логином существует");
 
             exists.Login = userDTO.Login;
             exists.Email = userDTO.Email;

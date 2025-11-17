@@ -4,6 +4,7 @@ using TestingPlatform.Application.DTOS;
 using TestingPlatform.Application.Interfaces;
 using TestingPlatform.Domain.Models;
 using TestingPlatform.Infrastructure.Data;
+using TestingPlatform.Infrastructure.Exceptions;
 
 namespace TestingPlatform.Infrastructure.Repositories
 {
@@ -27,7 +28,7 @@ namespace TestingPlatform.Infrastructure.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (student is null) throw new Exception("Студент не найден");
+            if (student is null) throw new EntityNotFoundException("Студент не найден");
 
             return mapper.Map<StudentDTO>(student);
         }
@@ -42,7 +43,7 @@ namespace TestingPlatform.Infrastructure.Repositories
         public async Task UpdateAsync(StudentDTO studentDTO, int id)
         {
             var student = await appDbContext.Students.FirstOrDefaultAsync(x => x.Id == id);
-            if (student is null) throw new Exception("Группа не найдена");
+            if (student is null) throw new EntityNotFoundException("Группа не найдена");
 
 
             student.Phone = studentDTO.Phone;
@@ -55,7 +56,7 @@ namespace TestingPlatform.Infrastructure.Repositories
         {
             var student = await appDbContext.Students.FirstOrDefaultAsync(g => g.Id == id);
 
-            if (student is null) throw new Exception("Группа не найдена");
+            if (student is null) throw new EntityNotFoundException("Группа не найдена");
 
             appDbContext.Students.Remove(student);
             await appDbContext.SaveChangesAsync();

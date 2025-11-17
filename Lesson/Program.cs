@@ -1,6 +1,9 @@
+using Lesson.Middlewares;
 using Microsoft.EntityFrameworkCore;
-using TestingPlatform.Infrastructure.Data;
+using Serilog;
+using Serilog.Formatting.Json;
 using TestingPlatform.Application.Interfaces;
+using TestingPlatform.Infrastructure.Data;
 using TestingPlatform.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,18 @@ builder.Services.AddAutoMapper(cfg => cfg.AddMaps("Lesson"));
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(formatter: new JsonFormatter(), path: "logs/structured.json")
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -39,7 +54,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
-
 app.Run();

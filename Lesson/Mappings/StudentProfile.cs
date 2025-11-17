@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Lesson.Requests.Student;
+using practice.Responses.Student;
 using TestingPlatform.Application.DTOS;
 
 namespace Lesson.Mappings
@@ -17,6 +18,10 @@ namespace Lesson.Mappings
                 .ForMember(x => x.VKLink, x => x.MapFrom(x => x.User.VKLink));
 
             CreateMap<UpdateStudentRequest, StudentDTO>();
+            CreateMap<StudentDTO, StudentForTestResponse>()
+                .ForMember(x => x.FirstName, x => x.MapFrom(x => x.User.FirstName))
+                .ForMember(x => x.LastName, x => x.MapFrom(x => x.User.LastName))
+                .ForMember(x => x.MiddleName, x => x.MapFrom(x => x.User.MiddleName));
         }
     }
 }

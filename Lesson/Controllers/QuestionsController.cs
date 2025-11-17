@@ -1,43 +1,52 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Lesson.Requests.Group;
+using Lesson.Requests.Questions;
+using Lesson.Responses.Group;
+using Lesson.Responses.Questions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestingPlatform.Application.DTOS;
+using TestingPlatform.Application.Interfaces;
 
 namespace Lesson.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuestionsController : ControllerBase
+    public class QuestionsController(IQuestionRepository _repository, IMapper mapper) : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetAllQuestions() => Ok("Spisok students");
+        public async Task<IActionResult> GetAllQuestions()
+        {
+            var questions = await _repository.GetAllAsync();
+            return Ok(mapper.Map<IEnumerable<QuestionResponse>>(questions));
+        }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetQuestionsById([FromRoute] int id)
+        public async Task<IActionResult> GetQuestionsById([FromRoute] int id)
         {
-            if (id <= 0) return BadRequest();
-            if (id == 1) return Ok($"Студент {id}");
+            var question = await _repository.GetByIdAsync(id);
 
-            return NotFound();
+            return Ok(mapper.Map<QuestionResponse>(question));
         }
 
         [HttpPost]
-        public IActionResult CreateQuestion()
+        public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionRequest group)
         {
-            return Created("/api/students/1", "Created student with id = 1");
+            var id = await _repository.CreateAsync(mapper.Map<QuestionDTO>(group));
+            return StatusCode(StatusCodes.Status201Created, new { Id = id });
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UpdateQuestion([FromRoute] int id)
+        public async Task<IActionResult> UpdateQuestion([FromBody] UpdateQuestionRequest group, int id)
         {
-            if (id <= 0) return BadRequest();
-
+            await _repository.UpdateAsync(mapper.Map<QuestionDTO>(group), id);
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteQuestion([FromRoute] int id)
+        public async Task<IActionResult> DeleteQuestion([FromRoute] int id)
         {
-            if (id <= 0) return BadRequest();
-
+            await _repository.DeleteAsync(id);
             return NoContent();
         }
     }

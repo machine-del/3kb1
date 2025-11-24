@@ -18,8 +18,5 @@ namespace TestingPlatform.Domain.Enums
         public int QuestionId  {  get; set; } 
 
         public Questions Question {  get; set; }
-        public List<UserSelectedOption> UserSelectedOptions {  get; set; }
-
-
     }
 }

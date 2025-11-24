@@ -18,8 +18,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(cfg => cfg.AddMaps("TestingPlatform.Infrastructure"));
-builder.Services.AddAutoMapper(cfg => cfg.AddMaps("Lesson"));
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
@@ -27,6 +25,11 @@ builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<IAttemptRepository, AttemptRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps("TestingPlatform.Infrastructure"));
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps("Lesson"));
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()

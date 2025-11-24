@@ -197,8 +197,6 @@ namespace TestingPlatform.Infrastructure.Data
             modelBuilder.Entity<UserSelectedOption>(e =>
             {
                 e.HasKey(x => x.Id);
-                e.Property(x => x.UserAttemptAnswerId).IsRequired();
-                e.Property(x => x.AnswerId).IsRequired();
 
                 e.HasOne(x => x.UserAttemptAnswer)
                     .WithMany(x => x.UserSelectedOptions)

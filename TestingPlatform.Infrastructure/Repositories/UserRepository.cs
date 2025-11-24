@@ -34,6 +34,11 @@ namespace TestingPlatform.Infrastructure.Repositories
         {
             var user = mapper.Map<User>(userDTO);
 
+            user.FirtsName = userDTO.FirstName;
+            user.MiddleName = userDTO.MiddleName;
+            user.LastName = userDTO.LastName;
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
+
             await appDbContext.Users.AddAsync(user);
             await appDbContext.SaveChangesAsync();
 

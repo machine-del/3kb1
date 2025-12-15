@@ -10,5 +10,6 @@ namespace TestingPlatform.Domain.Models
         public int AnswerId { get; set; }
         public UserAttemptsAnswer UserAttemptAnswer { get; set; }
         public Answer Answer { get; set; }
+        public int Value { get; set; }
     }
 }

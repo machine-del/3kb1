@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using TestingPlatform.Domain.Enums;
+using TestingPlatform.Infrastructure.Data;
 
 namespace TestingPlatform.Domain.Models
 {
@@ -38,6 +39,6 @@ namespace TestingPlatform.Domain.Models
         [JsonIgnore]
         [Required]
         public Student? Student { get; set; }
-
+        public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }

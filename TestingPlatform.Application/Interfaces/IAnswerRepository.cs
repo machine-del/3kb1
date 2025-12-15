@@ -16,4 +16,5 @@ public interface IAnswerRepository
     /// </summary>
     /// <param name="answerDto">Модель обновления ответа.</param>
     Task UpdateAsync(AnswerDTO answerDto);
+    Task DeleteAsync(int answerId);
 }

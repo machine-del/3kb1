@@ -15,5 +15,7 @@ namespace TestingPlatform.Application.Interfaces
         Task<int> CreateAsync(StudentDTO student);
         Task UpdateAsync(StudentDTO student, int id);
         Task DeleteAsync(int id);
+        Task<StudentDTO> GetByUserIdAsync(int id);
+        Task UpdateAvatarAsync(StudentDTO studentDTO);
     }
 }

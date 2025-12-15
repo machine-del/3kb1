@@ -17,6 +17,7 @@ namespace TestingPlatform.Application.DTOS
         public string VKLink { get; set; }
         public int UserId { get; set; }
         public UserDTO User { get; set; }
+        public string? AvatarPath { get; set; }
         public int? EducationScore { get; set; }
         public int? AdditionalScore { get; set; }
         public int? OtherScore { get; set; }

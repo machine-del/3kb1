@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using Lesson.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using practice.Requests.Test;
 using practice.Responses.Test;
@@ -14,6 +16,7 @@ namespace practice.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
 public class TestsController(ITestRepository testRepository, IMapper mapper) : ControllerBase
@@ -27,6 +30,7 @@ public class TestsController(ITestRepository testRepository, IMapper mapper) : C
     /// <remarks>Когда не заданы параметры - приходит полный список тестов</remarks>
     /// <returns></returns>
     [HttpGet("manage")]
+    [Authorize(Roles = "Manager")]
     [ProducesResponseType(typeof(IEnumerable<TestResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTestsForManager([FromQuery] bool? isPublic, [FromQuery] List<int> groupIds, [FromQuery] List<int> studentIds)
     {
@@ -56,12 +60,12 @@ public class TestsController(ITestRepository testRepository, IMapper mapper) : C
     /// </summary>
     /// <remarks>Тесты, доступные студенту (опубликованные). После добавления авторизации получение id через параметры будет удалено</remarks>
     /// <returns></returns>
-    [HttpGet("{id:int}/available")]
+    [HttpGet("available")]
     [ProducesResponseType(typeof(IEnumerable<TestResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetTestsForStudent(int id)
+    public async Task<IActionResult> GetTestsForStudent()
     {
-        //TODO: заменить после добавления авторизации
-        var tests = await testRepository.GetAllForStudentAsync(id);
+        var studentId = HttpContext.TryGetUserId();
+        var tests = await testRepository.GetAllForStudentAsync(studentId);
 
         return Ok(mapper.Map<IEnumerable<TestResponse>>(tests));
     }

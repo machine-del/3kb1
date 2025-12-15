@@ -12,5 +12,6 @@ namespace Lesson.Requests.Student
         public string MiddleName { get; set; }
         public string Phone { get; set; }
         public string VKLink { get; set; }
+        public string? AvatarPath { get; set; }
     }
 }

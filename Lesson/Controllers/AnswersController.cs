@@ -1,42 +1,41 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Lesson.Requests.Answer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestingPlatform.Application.DTOS;
+using TestingPlatform.Application.Interfaces;
+using TestingPlatform.Domain.Enums;
 
 namespace Lesson.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class AnswersController : ControllerBase
+    [Authorize(Roles = "Manager")]
+    [Route("api/[controller]")]
+    public class AnswersController(IAnswerRepository answerRepository, IMapper mapper) : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetAllAnswers() => Ok("Spisok answers");
-
-        [HttpGet("{id:int}")]
-        public IActionResult GetAnswersById([FromRoute] int id)
-        {
-            if (id <= 0) return BadRequest();
-            if (id == 1) return Ok($"Ответ {id}");
-
-            return NotFound();
-        }
-
         [HttpPost]
-        public IActionResult CreateAnswer()
+        public async Task<IActionResult> CreateAnswer(CreateAnswerRequest answer)
         {
-            return Created("/api/answers/1", "Created answer with id = 1");
+            var answerDto = mapper.Map<AnswerDTO>(answer);
+            var answerId = await answerRepository.CreateAsync(answerDto);
+
+            return StatusCode(StatusCodes.Status201Created, new { Id = answerId });
         }
 
-        [HttpPut("{id:int}")]
-        public IActionResult UpdateAnswer([FromRoute] int id)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAnswer(UpdateAnswerRequest answer)
         {
-            if (id <= 0) return BadRequest();
+            var answerDto = mapper.Map<AnswerDTO>(answer);
+            await answerRepository.UpdateAsync(answerDto);
 
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteAnswer([FromRoute] int id)
+        public async Task<IActionResult> DeleteAnswer(int id)
         {
-            if (id <= 0) return BadRequest();
+            await answerRepository.DeleteAsync(id);
 
             return NoContent();
         }

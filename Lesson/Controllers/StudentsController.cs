@@ -7,11 +7,14 @@ using TestingPlatform.Application.Interfaces;
 using AutoMapper;
 using Lesson.Requests.Student;
 using TestingPlatform.Application.DTOS;
+using Microsoft.AspNetCore.Authorization;
+using Lesson.Extensions;
 
 namespace Lesson.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class StudentsController(IStudentRepository studentRepository, IUserRepository userRepository, IMapper mapper) : ControllerBase
     {
         [HttpGet]
@@ -72,6 +75,38 @@ namespace Lesson.Controllers
         {
             await studentRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpPost("avatar")]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> UploadAvatar([FromForm] UploadAvatarRequest uploadAvatarRequest)
+        {
+            var studentId = HttpContext.TryGetUserId();
+
+            var student = await studentRepository.GetByIdAsync(studentId);
+
+            if (uploadAvatarRequest.formFile.Length == 0)
+                return BadRequest("Файл не передан");
+
+            var avatarsFolder = Path.Combine("Uploads", "avatars");
+
+            if (!Directory.Exists(avatarsFolder))
+                Directory.CreateDirectory(avatarsFolder);
+
+            var fileExtension = Path.GetExtension(uploadAvatarRequest.formFile.FileName);
+            var oldFileName = Path.GetFileNameWithoutExtension(uploadAvatarRequest.formFile.FileName);
+            var fileName = $"{oldFileName}_{Guid.NewGuid()}{fileExtension}";
+
+            var filePath = Path.Combine(avatarsFolder, fileName);
+            await using var stream = new FileStream(filePath, FileMode.Create);
+            await uploadAvatarRequest.formFile.CopyToAsync(stream);
+
+            student.AvatarPath = $"uploads/avatars/{fileName}";
+            await studentRepository.UpdateAvatarAsync(student);
+            return Ok(new
+            {
+                avatarUrl = student.AvatarPath
+            });
         }
     }
 }

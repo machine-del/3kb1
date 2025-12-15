@@ -1,4 +1,5 @@
-﻿using TestingPlatform.Domain.Enums;
+﻿using Lesson.Requests.Student;
+using TestingPlatform.Domain.Enums;
 
 namespace Lesson.Responses.Auth
 {
@@ -11,5 +12,6 @@ namespace Lesson.Responses.Auth
         public string? MiddleName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
+        public StudentResponse Student { get; set; }
     }
 }

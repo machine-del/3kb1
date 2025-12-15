@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Lesson.Requests.Answer;
 using TestingPlatform.Application.DTOS;
 using TestingPlatform.Domain.Enums;
 using TestingPlatform.Domain.Models;
@@ -9,6 +10,7 @@ public class AnswerProfile : Profile
 {
     public AnswerProfile()
     {
-        CreateMap<Answer, AnswerDTO>().ReverseMap();
+        CreateMap<CreateAnswerRequest, AnswerDTO>();
+        CreateMap<UpdateAnswerRequest, AnswerDTO>();
     }
 }

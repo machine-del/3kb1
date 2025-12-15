@@ -22,11 +22,17 @@ namespace TestingPlatform.Infrastructure.Data
         public DbSet<Questions> Questions => Set<Questions>();
         public DbSet<Project> Projects => Set<Project>();
         public DbSet<Attempt> Attempts => Set<Attempt>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<RefreshToken>(e =>
+            {
+                e.HasIndex(x => x.TokenHash);
+            });
+
             modelBuilder.Entity<User>(e =>
             {
                 e.HasKey(x => x.Id);
@@ -38,12 +44,27 @@ namespace TestingPlatform.Infrastructure.Data
                 e.Property(x => x.LastName).IsRequired().HasMaxLength(50);
                 e.Property(x => x.MiddleName).IsRequired(false);
                 e.Property(x => x.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-
+                e.HasMany(u => u.RefreshTokens)
+                    .WithOne(rt => rt.User)
+                    .HasForeignKey(rt => rt.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
                 e.HasOne(x => x.Student)
                     .WithOne(s => s.User)
                     .HasForeignKey<Student>(s => s.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasData(new User
+                {
+                    Id = 100,
+                    FirtsName = "Иван",
+                    MiddleName = "Иванович",
+                    LastName = "Иванов",
+                    Login = "manager",
+                    Email = "manager@local",
+                    PasswordHash = "$2a$11$pThhbbceEToQ9dK9L/7yo.hZ/hi6Kg4mlXa5Z0X8T3OF61O0wHGUW",
+                    Role = UserRole.Manager,
+                    CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) 
+                });
             });
 
             modelBuilder.Entity<Student>(e =>
@@ -103,7 +124,6 @@ namespace TestingPlatform.Infrastructure.Data
                 e.Property(x => x.Title).IsRequired().HasMaxLength(200);
                 e.Property(x => x.Description).IsRequired().HasMaxLength(1000);
                 e.Property(x => x.IsRepeatable).HasDefaultValue(false);
-                e.Property(x => x.Type).HasConversion<string>().HasMaxLength(20);
                 e.Property(x => x.Type).HasConversion<string>().HasMaxLength(20);
                 e.Property(x => x.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 e.Property(x => x.PublishedAt).IsRequired();
@@ -177,7 +197,7 @@ namespace TestingPlatform.Infrastructure.Data
                     .OnDelete(DeleteBehavior.Restrict);
 
                 e.HasOne(a => a.Student)
-                    .WithMany()
+                    .WithMany(s => s.Attempts)
                     .HasForeignKey(a => a.StudentId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
@@ -240,7 +260,7 @@ namespace TestingPlatform.Infrastructure.Data
                     .OnDelete(DeleteBehavior.Cascade);
 
                 e.HasOne(x => x.Student)
-                    .WithMany()
+                    .WithMany(s => s.TestResults)
                     .HasForeignKey(x => x.StudentId)
                     .OnDelete(DeleteBehavior.Cascade);
 

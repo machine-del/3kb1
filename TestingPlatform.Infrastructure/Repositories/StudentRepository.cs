@@ -61,5 +61,28 @@ namespace TestingPlatform.Infrastructure.Repositories
             appDbContext.Students.Remove(student);
             await appDbContext.SaveChangesAsync();
         }
+
+        public async Task<StudentDTO> GetByUserIdAsync(int id)
+        {
+            var student = await appDbContext.Students
+                .Include(x => x.User)
+                .Include(x => x.Tests)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserId == id);
+
+            if (student is null) throw new EntityNotFoundException("Студент не найден");
+
+            return mapper.Map<StudentDTO>(student);
+        }
+
+        public async Task UpdateAvatarAsync(StudentDTO studentDTO)
+        {
+            var student = await appDbContext.Students.FirstOrDefaultAsync(g => studentDTO.Id == g.Id);
+
+            if (student is null) throw new EntityNotFoundException("Группа не найдена");
+
+            student.AvatarPath = studentDTO.AvatarPath;
+            await appDbContext.SaveChangesAsync();
+        }
     }
 }

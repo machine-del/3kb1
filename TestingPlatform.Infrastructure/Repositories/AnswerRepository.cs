@@ -48,4 +48,15 @@ public class AnswerRepository(AppDbContext appDbContext, IMapper mapper) : IAnsw
 
         await appDbContext.SaveChangesAsync();
     }
+
+    public async Task DeleteAsync(int answerId)
+    {
+        var answer = await appDbContext.Answers.FirstOrDefaultAsync(x => x.Id == answerId);
+
+        if (answer is not null)
+            throw new EntityNotFoundException("Ответ не найден.");
+
+        appDbContext.Answers.Remove(answer);
+        await appDbContext.SaveChangesAsync();
+    }
 }
